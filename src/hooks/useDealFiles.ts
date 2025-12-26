@@ -15,14 +15,14 @@ export const useDealFiles = (dealId: string) => {
   return useQuery({
     queryKey: ['deal-files', dealId],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('deal_files')
         .select('*')
         .eq('deal_id', dealId)
         .order('created_at', { ascending: false });
       
       if (error) throw error;
-      return data as DealFile[];
+      return (data || []) as DealFile[];
     },
     enabled: !!dealId,
   });
@@ -33,7 +33,7 @@ export const useCreateDealFile = () => {
   
   return useMutation({
     mutationFn: async (file: { deal_id: string; name: string; file_url: string; file_type?: string }) => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('deal_files')
         .insert(file)
         .select()
@@ -57,7 +57,7 @@ export const useDeleteDealFile = () => {
   
   return useMutation({
     mutationFn: async ({ id, deal_id }: { id: string; deal_id: string }) => {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('deal_files')
         .delete()
         .eq('id', id);

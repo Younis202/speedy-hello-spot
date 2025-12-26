@@ -14,7 +14,7 @@ export const useAllCalls = () => {
   return useQuery({
     queryKey: ['all-calls'],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('calls')
         .select(`
           *,
@@ -26,7 +26,7 @@ export const useAllCalls = () => {
         .order('call_date', { ascending: false });
       
       if (error) throw error;
-      return data as CallWithDeal[];
+      return (data || []) as CallWithDeal[];
     },
   });
 };
@@ -37,7 +37,7 @@ export const useTodayFollowUps = () => {
   return useQuery({
     queryKey: ['today-followups'],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('calls')
         .select(`
           *,
@@ -50,7 +50,7 @@ export const useTodayFollowUps = () => {
         .order('call_date', { ascending: false });
       
       if (error) throw error;
-      return data as CallWithDeal[];
+      return (data || []) as CallWithDeal[];
     },
   });
 };
@@ -68,7 +68,7 @@ export const useCreateCall = () => {
       notes?: string;
       follow_up_date?: string;
     }) => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('calls')
         .insert(call)
         .select()
@@ -96,7 +96,7 @@ export const useDeleteCall = () => {
   
   return useMutation({
     mutationFn: async ({ id, deal_id }: { id: string; deal_id?: string }) => {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('calls')
         .delete()
         .eq('id', id);

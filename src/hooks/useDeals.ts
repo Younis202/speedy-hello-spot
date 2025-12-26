@@ -2,7 +2,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Deal, Contact } from '@/types';
 import { toast } from 'sonner';
-import { Json } from '@/integrations/supabase/types';
+
+type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 const parseContacts = (contacts: Json | null): Contact[] => {
   if (!contacts) return [];
@@ -16,13 +17,13 @@ export const useDeals = () => {
   return useQuery({
     queryKey: ['deals'],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('deals')
         .select('*')
         .order('updated_at', { ascending: false });
       
       if (error) throw error;
-      return data.map(deal => ({
+      return (data || []).map((deal: any) => ({
         ...deal,
         contacts: parseContacts(deal.contacts)
       })) as Deal[];
@@ -34,7 +35,7 @@ export const useDeal = (id: string) => {
   return useQuery({
     queryKey: ['deal', id],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('deals')
         .select('*')
         .eq('id', id)
@@ -57,7 +58,7 @@ export const useCreateDeal = () => {
   
   return useMutation({
     mutationFn: async (deal: Partial<Deal>) => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('deals')
         .insert([{
           name: deal.name,
@@ -93,7 +94,7 @@ export const useUpdateDeal = () => {
   
   return useMutation({
     mutationFn: async ({ id, ...deal }: Partial<Deal> & { id: string }) => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('deals')
         .update({
           name: deal.name,
@@ -131,7 +132,7 @@ export const useDeleteDeal = () => {
   
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('deals')
         .delete()
         .eq('id', id);

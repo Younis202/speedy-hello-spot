@@ -23,14 +23,14 @@ export const useReminders = () => {
 
       // Fetch all data in parallel
       const [callsRes, dealsRes, debtsRes, tasksRes] = await Promise.all([
-        supabase
+        (supabase as any)
           .from('calls')
           .select('*, deals(name)')
           .not('follow_up_date', 'is', null)
           .gte('follow_up_date', format(today, 'yyyy-MM-dd'))
           .lte('follow_up_date', format(nextWeek, 'yyyy-MM-dd'))
           .order('follow_up_date', { ascending: true }),
-        supabase
+        (supabase as any)
           .from('deals')
           .select('*')
           .not('next_action_date', 'is', null)
@@ -38,7 +38,7 @@ export const useReminders = () => {
           .gte('next_action_date', format(today, 'yyyy-MM-dd'))
           .lte('next_action_date', format(nextWeek, 'yyyy-MM-dd'))
           .order('next_action_date', { ascending: true }),
-        supabase
+        (supabase as any)
           .from('debts')
           .select('*')
           .eq('is_paid', false)
@@ -46,7 +46,7 @@ export const useReminders = () => {
           .gte('due_date', format(today, 'yyyy-MM-dd'))
           .lte('due_date', format(nextWeek, 'yyyy-MM-dd'))
           .order('due_date', { ascending: true }),
-        supabase
+        (supabase as any)
           .from('deal_tasks')
           .select('*, deals(name)')
           .eq('is_completed', false)
@@ -60,8 +60,8 @@ export const useReminders = () => {
 
       // Call follow-ups
       if (callsRes.data) {
-        callsRes.data.forEach(call => {
-          const dealName = (call.deals as any)?.name;
+        callsRes.data.forEach((call: any) => {
+          const dealName = call.deals?.name;
           reminders.push({
             id: `call-${call.id}`,
             type: 'call_followup',
@@ -77,7 +77,7 @@ export const useReminders = () => {
 
       // Deal next actions
       if (dealsRes.data) {
-        dealsRes.data.forEach(deal => {
+        dealsRes.data.forEach((deal: any) => {
           reminders.push({
             id: `deal-${deal.id}`,
             type: 'deal_action',
@@ -93,7 +93,7 @@ export const useReminders = () => {
 
       // Debt due dates
       if (debtsRes.data) {
-        debtsRes.data.forEach(debt => {
+        debtsRes.data.forEach((debt: any) => {
           reminders.push({
             id: `debt-${debt.id}`,
             type: 'debt_due',
@@ -109,8 +109,8 @@ export const useReminders = () => {
 
       // Task due dates
       if (tasksRes.data) {
-        tasksRes.data.forEach(task => {
-          const dealName = (task.deals as any)?.name;
+        tasksRes.data.forEach((task: any) => {
+          const dealName = task.deals?.name;
           reminders.push({
             id: `task-${task.id}`,
             type: 'task_due',

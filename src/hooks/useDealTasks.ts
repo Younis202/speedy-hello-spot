@@ -16,7 +16,7 @@ export const useDealTasks = (dealId: string) => {
   return useQuery({
     queryKey: ['deal-tasks', dealId],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('deal_tasks')
         .select('*')
         .eq('deal_id', dealId)
@@ -24,7 +24,7 @@ export const useDealTasks = (dealId: string) => {
         .order('created_at', { ascending: true });
       
       if (error) throw error;
-      return data as DealTask[];
+      return (data || []) as DealTask[];
     },
     enabled: !!dealId,
   });
@@ -35,7 +35,7 @@ export const useCreateDealTask = () => {
   
   return useMutation({
     mutationFn: async (task: { deal_id: string; title: string; priority?: number; due_date?: string }) => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('deal_tasks')
         .insert(task)
         .select()
@@ -59,7 +59,7 @@ export const useUpdateDealTask = () => {
   
   return useMutation({
     mutationFn: async ({ id, deal_id, ...updates }: { id: string; deal_id: string } & Partial<DealTask>) => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('deal_tasks')
         .update(updates)
         .eq('id', id)
@@ -80,7 +80,7 @@ export const useDeleteDealTask = () => {
   
   return useMutation({
     mutationFn: async ({ id, deal_id }: { id: string; deal_id: string }) => {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('deal_tasks')
         .delete()
         .eq('id', id);
