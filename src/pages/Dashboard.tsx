@@ -54,66 +54,78 @@ const Dashboard = () => {
     <Layout>
       <div className="space-y-8 animate-fade-in">
         
-        {/* Hero Header Section */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary/8 via-accent/5 to-transparent border border-border/50 p-8">
-          {/* Background decoration */}
-          <div className="absolute top-0 left-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-          <div className="absolute bottom-0 right-0 w-48 h-48 bg-accent/5 rounded-full blur-3xl translate-x-1/3 translate-y-1/3" />
+        {/* Hero Header Section - Ultra Premium */}
+        <div className="relative overflow-hidden rounded-3xl card-hero p-8">
+          {/* Animated Background Effects */}
+          <div className="absolute top-0 left-0 w-80 h-80 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 animate-pulse" />
+          <div className="absolute bottom-0 right-0 w-60 h-60 bg-gradient-to-tl from-accent/15 to-transparent rounded-full blur-3xl translate-x-1/3 translate-y-1/3" />
+          <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-gradient-radial from-success/5 to-transparent rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
           
           <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            <div className="space-y-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/80 border border-border/50 text-sm text-muted-foreground">
-                <Calendar className="w-4 h-4" />
-                {today.toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+            <div className="space-y-4">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-muted-foreground">
+                <Calendar className="w-4 h-4 text-primary" />
+                <span>{today.toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                <span className="text-lg">{timeIcon}</span>
               </div>
               <h1 className="text-4xl lg:text-5xl font-bold">
                 {greeting}، <span className="text-gradient">يونس</span>
               </h1>
-              <p className="text-lg text-muted-foreground max-w-md">
+              <p className="text-lg text-muted-foreground max-w-md leading-relaxed">
                 {focusNow 
-                  ? `عندك ${prioritySummary.totalDeals} مصلحة نشطة · ركز على "${focusNow.name}" النهارده`
+                  ? <>عندك <span className="text-foreground font-semibold">{prioritySummary.totalDeals}</span> مصلحة نشطة · ركز على "<span className="text-primary font-semibold">{focusNow.name}</span>" النهارده</>
                   : 'ابدأ يومك بإضافة مصالح جديدة'
                 }
               </p>
             </div>
 
-            {/* Quick Actions */}
+            {/* Quick Actions - Floating Cards */}
             <div className="flex flex-wrap gap-3">
               <Link 
                 to="/deals" 
-                className="inline-flex items-center gap-2 px-5 py-3 bg-gradient-primary text-primary-foreground rounded-2xl font-medium hover:opacity-90 transition-all hover:scale-[1.02] shadow-lg shadow-primary/20"
+                className="group inline-flex items-center gap-3 px-6 py-4 bg-gradient-primary text-primary-foreground rounded-2xl font-medium hover:opacity-90 transition-all hover:scale-[1.02] shadow-lg glow-sm"
               >
-                <Briefcase className="w-5 h-5" />
-                المصالح
-                <ArrowUpRight className="w-4 h-4" />
+                <div className="w-10 h-10 rounded-xl bg-primary-foreground/20 flex items-center justify-center">
+                  <Briefcase className="w-5 h-5" />
+                </div>
+                <div className="text-right">
+                  <span className="block font-bold">المصالح</span>
+                  <span className="text-xs opacity-80">{activeDeals.length} نشطة</span>
+                </div>
+                <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </Link>
               <Link 
                 to="/focus" 
-                className="inline-flex items-center gap-2 px-5 py-3 bg-card border border-border hover:border-primary/30 rounded-2xl font-medium transition-all hover:scale-[1.02]"
+                className="group inline-flex items-center gap-3 px-6 py-4 glass hover:bg-secondary/50 rounded-2xl font-medium transition-all hover:scale-[1.02]"
               >
-                <Target className="w-5 h-5 text-primary" />
-                الأولويات
+                <div className="w-10 h-10 rounded-xl bg-accent/15 flex items-center justify-center">
+                  <Target className="w-5 h-5 text-accent" />
+                </div>
+                <div className="text-right">
+                  <span className="block font-bold">الأولويات</span>
+                  <span className="text-xs text-muted-foreground">{prioritySummary.criticalCount} حرجة</span>
+                </div>
               </Link>
             </div>
           </div>
         </div>
 
-        {/* Stats Overview - Redesigned */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Stats Overview - Floating Cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger-children">
           {/* Active Deals */}
           <Link to="/deals" className="group">
-            <div className="card-premium p-5 h-full">
+            <div className="card-elegant p-6 h-full">
               <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Briefcase className="w-6 h-6 text-primary" />
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center group-hover:scale-110 transition-transform glow-sm">
+                  <Briefcase className="w-7 h-7 text-primary" />
                 </div>
-                <ArrowUpRight className="w-5 h-5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                <ArrowUpRight className="w-5 h-5 text-muted-foreground opacity-0 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
               </div>
               <p className="text-4xl font-bold mb-1">{activeDeals.length}</p>
               <p className="text-sm text-muted-foreground">مصلحة نشطة</p>
               {prioritySummary.criticalCount > 0 && (
-                <div className="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-danger/10 text-danger text-xs font-medium">
-                  <Flame className="w-3 h-3" />
+                <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-danger/15 text-danger text-xs font-medium glow-danger">
+                  <Flame className="w-3.5 h-3.5" />
                   {prioritySummary.criticalCount} حرجة
                 </div>
               )}
@@ -122,33 +134,33 @@ const Dashboard = () => {
 
           {/* Expected Value */}
           <Link to="/deals" className="group">
-            <div className="card-premium p-5 h-full">
+            <div className="card-elegant p-6 h-full">
               <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-success/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <TrendingUp className="w-6 h-6 text-success" />
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-success/20 to-success/5 flex items-center justify-center group-hover:scale-110 transition-transform glow-success">
+                  <TrendingUp className="w-7 h-7 text-success" />
                 </div>
-                <ArrowUpRight className="w-5 h-5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                <ArrowUpRight className="w-5 h-5 text-muted-foreground opacity-0 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
               </div>
               <p className="text-3xl font-bold text-success mb-1">{formatMoney(totalExpected)}</p>
               <p className="text-sm text-muted-foreground">القيمة المتوقعة</p>
-              <p className="text-xs text-muted-foreground/70 mt-1">جنيه مصري</p>
+              <p className="text-xs text-muted-foreground/60 mt-1">جنيه مصري</p>
             </div>
           </Link>
 
           {/* Total Debts */}
           <Link to="/money" className="group">
             <div className={cn(
-              "card-premium p-5 h-full",
-              totalDebts > 0 && "border-danger/20"
+              "card-elegant p-6 h-full",
+              totalDebts > 0 && "border-danger/30"
             )}>
               <div className="flex items-start justify-between mb-4">
                 <div className={cn(
-                  "w-12 h-12 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform",
-                  totalDebts > 0 ? "bg-danger/10" : "bg-success/10"
+                  "w-14 h-14 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform",
+                  totalDebts > 0 ? "bg-gradient-to-br from-danger/20 to-danger/5 glow-danger" : "bg-gradient-to-br from-success/20 to-success/5 glow-success"
                 )}>
-                  <Wallet className={cn("w-6 h-6", totalDebts > 0 ? "text-danger" : "text-success")} />
+                  <Wallet className={cn("w-7 h-7", totalDebts > 0 ? "text-danger" : "text-success")} />
                 </div>
-                <ArrowUpRight className="w-5 h-5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                <ArrowUpRight className="w-5 h-5 text-muted-foreground opacity-0 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
               </div>
               <p className={cn(
                 "text-3xl font-bold mb-1",
@@ -158,8 +170,8 @@ const Dashboard = () => {
               </p>
               <p className="text-sm text-muted-foreground">الديون المتبقية</p>
               {totalDebts > 0 && financialHealth >= 100 && (
-                <div className="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-success/10 text-success text-xs font-medium">
-                  <Sparkles className="w-3 h-3" />
+                <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-success/15 text-success text-xs font-medium glow-success">
+                  <Sparkles className="w-3.5 h-3.5" />
                   تقدر تسدد!
                 </div>
               )}
@@ -167,18 +179,18 @@ const Dashboard = () => {
           </Link>
 
           {/* Today's Progress */}
-          <div className="card-premium p-5 h-full">
+          <div className="card-elegant p-6 h-full">
             <div className="flex items-start justify-between mb-4">
-              <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center">
-                <CheckCircle className="w-6 h-6 text-accent" />
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent/20 to-accent/5 flex items-center justify-center glow-accent">
+                <CheckCircle className="w-7 h-7 text-accent" />
               </div>
               {todayMoves.length > 0 && (
                 <span className={cn(
-                  "text-xs font-bold px-2 py-1 rounded-full",
+                  "text-sm font-bold px-3 py-1 rounded-full",
                   progressPercent === 100 
-                    ? "bg-success/15 text-success" 
+                    ? "bg-success/20 text-success" 
                     : progressPercent >= 50 
-                      ? "bg-accent/15 text-accent"
+                      ? "bg-accent/20 text-accent"
                       : "bg-muted text-muted-foreground"
                 )}>
                   {progressPercent}%
@@ -190,11 +202,11 @@ const Dashboard = () => {
             </p>
             <p className="text-sm text-muted-foreground">تحركات اليوم</p>
             {todayMoves.length > 0 && (
-              <div className="mt-3 h-2 bg-secondary rounded-full overflow-hidden">
+              <div className="mt-4 h-2.5 bg-secondary rounded-full overflow-hidden">
                 <div 
                   className={cn(
-                    "h-full rounded-full transition-all duration-500",
-                    progressPercent === 100 ? "bg-success" : "bg-gradient-accent"
+                    "h-full rounded-full transition-all duration-700",
+                    progressPercent === 100 ? "bg-gradient-to-r from-success to-emerald-400" : "bg-gradient-accent"
                   )}
                   style={{ width: `${progressPercent}%` }}
                 />
