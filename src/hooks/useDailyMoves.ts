@@ -9,14 +9,14 @@ export const useDailyMoves = () => {
   return useQuery({
     queryKey: ['daily-moves', today],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('daily_moves')
         .select('*')
         .eq('move_date', today)
         .order('priority', { ascending: true });
       
       if (error) throw error;
-      return data as DailyMove[];
+      return (data || []) as DailyMove[];
     },
   });
 };
@@ -26,7 +26,7 @@ export const useCreateDailyMove = () => {
   
   return useMutation({
     mutationFn: async (move: Partial<DailyMove>) => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('daily_moves')
         .insert([{
           title: move.title,
@@ -55,7 +55,7 @@ export const useToggleDailyMove = () => {
   
   return useMutation({
     mutationFn: async ({ id, is_completed }: { id: string; is_completed: boolean }) => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('daily_moves')
         .update({ is_completed })
         .eq('id', id)
@@ -79,7 +79,7 @@ export const useDeleteDailyMove = () => {
   
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('daily_moves')
         .delete()
         .eq('id', id);
