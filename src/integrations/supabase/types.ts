@@ -14,7 +14,319 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ai_conversations: {
+        Row: {
+          created_at: string
+          id: string
+          messages: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          messages?: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          messages?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      calls: {
+        Row: {
+          call_date: string
+          call_type: string
+          contact_name: string
+          created_at: string
+          deal_id: string | null
+          follow_up_date: string | null
+          id: string
+          notes: string | null
+          phone_number: string | null
+          result: string | null
+        }
+        Insert: {
+          call_date?: string
+          call_type?: string
+          contact_name: string
+          created_at?: string
+          deal_id?: string | null
+          follow_up_date?: string | null
+          id?: string
+          notes?: string | null
+          phone_number?: string | null
+          result?: string | null
+        }
+        Update: {
+          call_date?: string
+          call_type?: string
+          contact_name?: string
+          created_at?: string
+          deal_id?: string | null
+          follow_up_date?: string | null
+          id?: string
+          notes?: string | null
+          phone_number?: string | null
+          result?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "calls_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "deals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      daily_moves: {
+        Row: {
+          created_at: string
+          deal_id: string | null
+          id: string
+          is_completed: boolean
+          move_date: string
+          priority: number
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          deal_id?: string | null
+          id?: string
+          is_completed?: boolean
+          move_date?: string
+          priority?: number
+          title: string
+        }
+        Update: {
+          created_at?: string
+          deal_id?: string | null
+          id?: string
+          is_completed?: boolean
+          move_date?: string
+          priority?: number
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_moves_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "deals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deal_events: {
+        Row: {
+          created_at: string
+          deal_id: string
+          description: string | null
+          event_date: string
+          event_type: string
+          id: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          deal_id: string
+          description?: string | null
+          event_date?: string
+          event_type?: string
+          id?: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          deal_id?: string
+          description?: string | null
+          event_date?: string
+          event_type?: string
+          id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deal_events_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "deals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deal_files: {
+        Row: {
+          created_at: string
+          deal_id: string
+          file_type: string | null
+          file_url: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          deal_id: string
+          file_type?: string | null
+          file_url: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          deal_id?: string
+          file_type?: string | null
+          file_url?: string
+          id?: string
+          name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deal_files_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "deals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deal_tasks: {
+        Row: {
+          created_at: string
+          deal_id: string
+          due_date: string | null
+          id: string
+          is_completed: boolean
+          priority: number
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          deal_id: string
+          due_date?: string | null
+          id?: string
+          is_completed?: boolean
+          priority?: number
+          title: string
+        }
+        Update: {
+          created_at?: string
+          deal_id?: string
+          due_date?: string | null
+          id?: string
+          is_completed?: boolean
+          priority?: number
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deal_tasks_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "deals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deals: {
+        Row: {
+          contacts: Json | null
+          created_at: string
+          currency: string
+          description: string | null
+          expected_value: number
+          id: string
+          name: string
+          next_action: string | null
+          next_action_date: string | null
+          notes: string | null
+          priority: string
+          stage: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          contacts?: Json | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          expected_value?: number
+          id?: string
+          name: string
+          next_action?: string | null
+          next_action_date?: string | null
+          notes?: string | null
+          priority?: string
+          stage?: string
+          type?: string
+          updated_at?: string
+        }
+        Update: {
+          contacts?: Json | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          expected_value?: number
+          id?: string
+          name?: string
+          next_action?: string | null
+          next_action_date?: string | null
+          notes?: string | null
+          priority?: string
+          stage?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      debts: {
+        Row: {
+          amount: number
+          created_at: string
+          creditor_name: string
+          currency: string
+          due_date: string | null
+          id: string
+          is_paid: boolean
+          monthly_payment: number
+          notes: string | null
+          pressure_level: string
+          remaining_amount: number | null
+          updated_at: string
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          creditor_name: string
+          currency?: string
+          due_date?: string | null
+          id?: string
+          is_paid?: boolean
+          monthly_payment?: number
+          notes?: string | null
+          pressure_level?: string
+          remaining_amount?: number | null
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          creditor_name?: string
+          currency?: string
+          due_date?: string | null
+          id?: string
+          is_paid?: boolean
+          monthly_payment?: number
+          notes?: string | null
+          pressure_level?: string
+          remaining_amount?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
