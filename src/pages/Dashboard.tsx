@@ -19,8 +19,6 @@ import {
 import { useDeals } from '@/hooks/useDeals';
 import { useDebts } from '@/hooks/useDebts';
 import { useDailyMoves } from '@/hooks/useDailyMoves';
-import { useReminders, getTodayReminders } from '@/hooks/useReminders';
-import { RemindersPanel } from '@/components/reminders/RemindersPanel';
 import { usePriorityEngine } from '@/hooks/usePriorityEngine';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -228,9 +226,6 @@ const Dashboard = () => {
           {/* Blocked Deals Warning */}
           <BlockedDealsCard blockedDeals={blockedDeals} />
         </div>
-
-        {/* Reminders Section */}
-        <RemindersPanel />
 
         {/* Main Grid - Better Layout */}
         <div className="grid gap-6 lg:grid-cols-2">
