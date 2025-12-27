@@ -18,8 +18,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Cairo", "Inter", "sans-serif"],
-        arabic: ["Cairo", "Inter", "sans-serif"],
+        arabic: ["Cairo", "Readex Pro", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
