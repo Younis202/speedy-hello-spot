@@ -7,13 +7,13 @@ export const useDebts = () => {
   return useQuery({
     queryKey: ['debts'],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('debts')
         .select('*')
         .order('pressure_level', { ascending: false });
       
       if (error) throw error;
-      return (data || []) as Debt[];
+      return data as Debt[];
     },
   });
 };
@@ -23,7 +23,7 @@ export const useCreateDebt = () => {
   
   return useMutation({
     mutationFn: async (debt: Partial<Debt>) => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('debts')
         .insert([{
           creditor_name: debt.creditor_name,
@@ -56,7 +56,7 @@ export const useUpdateDebt = () => {
   
   return useMutation({
     mutationFn: async ({ id, ...debt }: Partial<Debt> & { id: string }) => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('debts')
         .update({
           creditor_name: debt.creditor_name,
@@ -91,7 +91,7 @@ export const useDeleteDebt = () => {
   
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('debts')
         .delete()
         .eq('id', id);

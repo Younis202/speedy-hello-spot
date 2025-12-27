@@ -7,14 +7,14 @@ export const useDealEvents = (dealId: string) => {
   return useQuery({
     queryKey: ['deal-events', dealId],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('deal_events')
         .select('*')
         .eq('deal_id', dealId)
         .order('event_date', { ascending: false });
       
       if (error) throw error;
-      return (data || []) as DealEvent[];
+      return data as DealEvent[];
     },
     enabled: !!dealId,
   });
@@ -25,7 +25,7 @@ export const useCreateDealEvent = () => {
   
   return useMutation({
     mutationFn: async (event: Partial<DealEvent>) => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('deal_events')
         .insert([{
           deal_id: event.deal_id,

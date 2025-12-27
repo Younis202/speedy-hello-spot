@@ -7,14 +7,14 @@ export const useDealCalls = (dealId: string) => {
   return useQuery({
     queryKey: ['deal-calls', dealId],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('calls')
         .select('*')
         .eq('deal_id', dealId)
         .order('call_date', { ascending: false });
       
       if (error) throw error;
-      return (data || []) as Call[];
+      return data as Call[];
     },
     enabled: !!dealId,
   });
@@ -33,7 +33,7 @@ export const useCreateDealCall = () => {
       notes?: string;
       follow_up_date?: string;
     }) => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('calls')
         .insert(call)
         .select()
