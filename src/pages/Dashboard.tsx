@@ -4,7 +4,6 @@ import { MoneyPressureCard } from '@/components/dashboard/MoneyPressureCard';
 import { HotDealsCard } from '@/components/dashboard/HotDealsCard';
 import { PriorityCard } from '@/components/dashboard/PriorityCard';
 import { BlockedDealsCard } from '@/components/dashboard/BlockedDealsCard';
-import { RemindersPanel } from '@/components/reminders/RemindersPanel';
 import {
   TrendingUp, 
   Wallet, 
@@ -229,10 +228,9 @@ const Dashboard = () => {
         </div>
 
         {/* Main Grid - Better Layout */}
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-6 lg:grid-cols-2">
           <DailyMovesCard />
           <MoneyPressureCard />
-          <RemindersPanel />
         </div>
 
         {/* Hot Deals */}
