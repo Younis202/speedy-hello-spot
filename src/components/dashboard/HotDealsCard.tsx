@@ -1,6 +1,6 @@
 import { useDeals } from '@/hooks/useDeals';
 import { Link } from 'react-router-dom';
-import { TrendingUp, ChevronLeft, Briefcase, ArrowUpRight, Clock, Flame } from 'lucide-react';
+import { ChevronLeft, Briefcase, ArrowUpRight, Clock, Flame } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const stageStyles: Record<string, string> = {

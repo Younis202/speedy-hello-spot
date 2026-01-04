@@ -10,15 +10,32 @@ import MoneyPage from "./pages/MoneyPage";
 import CallsPage from "./pages/CallsPage";
 import AIPage from "./pages/AIPage";
 import FocusPage from "./pages/FocusPage";
+import InstallPage from "./pages/InstallPage";
 import NotFound from "./pages/NotFound";
+import { OfflineIndicator } from "./components/OfflineIndicator";
+import ElectronTitleBar from "./components/ElectronTitleBar";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      gcTime: 1000 * 60 * 60, // 1 hour (renamed from cacheTime)
+      retry: (failureCount, error) => {
+        // Don't retry if offline
+        if (!navigator.onLine) return false;
+        return failureCount < 3;
+      },
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
+      <ElectronTitleBar />
       <Toaster />
       <Sonner />
+      <OfflineIndicator />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Dashboard />} />
@@ -28,6 +45,7 @@ const App = () => (
           <Route path="/calls" element={<CallsPage />} />
           <Route path="/ai" element={<AIPage />} />
           <Route path="/focus" element={<FocusPage />} />
+          <Route path="/install" element={<InstallPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

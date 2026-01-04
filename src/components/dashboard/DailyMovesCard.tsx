@@ -1,4 +1,4 @@
-import { CheckCircle2, Circle, Trash2, Plus, ListTodo, ArrowRight } from 'lucide-react';
+import { CheckCircle2, Circle, Trash2, Plus, ListTodo } from 'lucide-react';
 import { useDailyMoves, useToggleDailyMove, useDeleteDailyMove, useCreateDailyMove } from '@/hooks/useDailyMoves';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';

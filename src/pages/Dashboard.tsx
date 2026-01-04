@@ -13,7 +13,6 @@ import {
   ArrowUpRight,
   Briefcase,
   Sparkles,
-  Clock,
   Flame
 } from 'lucide-react';
 import { useDeals } from '@/hooks/useDeals';
@@ -33,8 +32,7 @@ const Dashboard = () => {
   const { data: debts = [] } = useDebts();
   const { data: moves = [] } = useDailyMoves();
   
-  // Priority Engine
-  const { topPriorities, focusNow, blockedDeals, easyWins, summary: prioritySummary } = usePriorityEngine({ deals, debts });
+  const { topPriorities, focusNow, blockedDeals, summary: prioritySummary } = usePriorityEngine({ deals, debts });
 
   const activeDeals = deals.filter(d => d.stage !== 'مقفول' && d.stage !== 'ملغي');
   const totalDebts = debts.filter(d => !d.is_paid).reduce((sum, d) => sum + Number(d.remaining_amount || d.amount), 0);
@@ -42,24 +40,18 @@ const Dashboard = () => {
   const todayMoves = moves.filter(m => m.move_date === new Date().toISOString().split('T')[0]);
   const completedMoves = todayMoves.filter(m => m.is_completed).length;
   const progressPercent = todayMoves.length > 0 ? Math.round((completedMoves / todayMoves.length) * 100) : 0;
+  const financialHealth = totalDebts > 0 ? Math.min(100, Math.round((totalExpected / totalDebts) * 100)) : 100;
 
   const formatMoney = (amount: number) => new Intl.NumberFormat('ar-EG').format(amount);
 
-  // Calculate financial health
-  const financialHealth = totalDebts > 0 
-    ? Math.min(100, Math.round((totalExpected / totalDebts) * 100))
-    : 100;
-
   return (
     <Layout>
-      <div className="space-y-8 animate-fade-in">
+      <div className="space-y-6 animate-fade-in">
         
-        {/* Hero Header Section - Ultra Premium */}
+        {/* Hero Header */}
         <div className="relative overflow-hidden rounded-3xl card-hero p-8">
-          {/* Animated Background Effects */}
           <div className="absolute top-0 left-0 w-80 h-80 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 animate-pulse" />
           <div className="absolute bottom-0 right-0 w-60 h-60 bg-gradient-to-tl from-accent/15 to-transparent rounded-full blur-3xl translate-x-1/3 translate-y-1/3" />
-          <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-gradient-radial from-success/5 to-transparent rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
           
           <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             <div className="space-y-4">
@@ -79,7 +71,6 @@ const Dashboard = () => {
               </p>
             </div>
 
-            {/* Quick Actions - Floating Cards */}
             <div className="flex flex-wrap gap-3">
               <Link 
                 to="/deals" 
@@ -110,9 +101,8 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Stats Overview - Floating Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger-children">
-          {/* Active Deals */}
+        {/* Stats Overview */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <Link to="/deals" className="group">
             <div className="card-elegant p-6 h-full">
               <div className="flex items-start justify-between mb-4">
@@ -132,7 +122,6 @@ const Dashboard = () => {
             </div>
           </Link>
 
-          {/* Expected Value */}
           <Link to="/deals" className="group">
             <div className="card-elegant p-6 h-full">
               <div className="flex items-start justify-between mb-4">
@@ -147,12 +136,8 @@ const Dashboard = () => {
             </div>
           </Link>
 
-          {/* Total Debts */}
           <Link to="/money" className="group">
-            <div className={cn(
-              "card-elegant p-6 h-full",
-              totalDebts > 0 && "border-danger/30"
-            )}>
+            <div className={cn("card-elegant p-6 h-full", totalDebts > 0 && "border-danger/30")}>
               <div className="flex items-start justify-between mb-4">
                 <div className={cn(
                   "w-14 h-14 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform",
@@ -162,10 +147,7 @@ const Dashboard = () => {
                 </div>
                 <ArrowUpRight className="w-5 h-5 text-muted-foreground opacity-0 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
               </div>
-              <p className={cn(
-                "text-3xl font-bold mb-1",
-                totalDebts > 0 ? "text-danger" : "text-success"
-              )}>
+              <p className={cn("text-3xl font-bold mb-1", totalDebts > 0 ? "text-danger" : "text-success")}>
                 {totalDebts > 0 ? formatMoney(totalDebts) : 'صفر'}
               </p>
               <p className="text-sm text-muted-foreground">الديون المتبقية</p>
@@ -178,7 +160,6 @@ const Dashboard = () => {
             </div>
           </Link>
 
-          {/* Today's Progress */}
           <div className="card-elegant p-6 h-full">
             <div className="flex items-start justify-between mb-4">
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent/20 to-accent/5 flex items-center justify-center glow-accent">
@@ -187,11 +168,7 @@ const Dashboard = () => {
               {todayMoves.length > 0 && (
                 <span className={cn(
                   "text-sm font-bold px-3 py-1 rounded-full",
-                  progressPercent === 100 
-                    ? "bg-success/20 text-success" 
-                    : progressPercent >= 50 
-                      ? "bg-accent/20 text-accent"
-                      : "bg-muted text-muted-foreground"
+                  progressPercent === 100 ? "bg-success/20 text-success" : progressPercent >= 50 ? "bg-accent/20 text-accent" : "bg-muted text-muted-foreground"
                 )}>
                   {progressPercent}%
                 </span>
@@ -204,10 +181,7 @@ const Dashboard = () => {
             {todayMoves.length > 0 && (
               <div className="mt-4 h-2.5 bg-secondary rounded-full overflow-hidden">
                 <div 
-                  className={cn(
-                    "h-full rounded-full transition-all duration-700",
-                    progressPercent === 100 ? "bg-gradient-to-r from-success to-emerald-400" : "bg-gradient-accent"
-                  )}
+                  className={cn("h-full rounded-full transition-all duration-700", progressPercent === 100 ? "bg-gradient-to-r from-success to-emerald-400" : "bg-gradient-accent")}
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
@@ -215,25 +189,17 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Priority Engine Section */}
-        <div className="space-y-6">
-          <PriorityCard 
-            topPriorities={topPriorities}
-            focusNow={focusNow}
-            summary={prioritySummary}
-          />
-          
-          {/* Blocked Deals Warning */}
-          <BlockedDealsCard blockedDeals={blockedDeals} />
-        </div>
+        {/* Priority Engine */}
+        <PriorityCard topPriorities={topPriorities} focusNow={focusNow} summary={prioritySummary} />
+        
+        {blockedDeals.length > 0 && <BlockedDealsCard blockedDeals={blockedDeals} />}
 
-        {/* Main Grid - Better Layout */}
+        {/* Main Grid */}
         <div className="grid gap-6 lg:grid-cols-2">
           <DailyMovesCard />
           <MoneyPressureCard />
         </div>
 
-        {/* Hot Deals */}
         <HotDealsCard />
       </div>
     </Layout>

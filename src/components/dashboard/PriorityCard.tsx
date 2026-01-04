@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import { PrioritizedDeal } from '@/hooks/usePriorityEngine';
 import { cn } from '@/lib/utils';
-import { 
-  Target, 
-  ArrowLeft, 
-  Zap, 
+import {
+  Target,
+  ArrowLeft,
+  Zap,
   TrendingUp,
   AlertTriangle,
   Flame,
@@ -28,7 +28,6 @@ const focusLevelConfig = {
     bg: 'bg-danger/5 border-danger/30',
     badge: 'bg-danger/15 text-danger',
     icon: 'text-danger',
-    glow: 'shadow-danger/20',
   },
   high: {
     label: 'عالي',
@@ -36,7 +35,6 @@ const focusLevelConfig = {
     bg: 'bg-warning/5 border-warning/30',
     badge: 'bg-warning/15 text-warning',
     icon: 'text-warning',
-    glow: 'shadow-warning/20',
   },
   medium: {
     label: 'متوسط',
@@ -44,7 +42,6 @@ const focusLevelConfig = {
     bg: 'bg-primary/5 border-primary/20',
     badge: 'bg-primary/15 text-primary',
     icon: 'text-primary',
-    glow: '',
   },
   low: {
     label: 'عادي',
@@ -52,7 +49,6 @@ const focusLevelConfig = {
     bg: 'bg-muted/50 border-border',
     badge: 'bg-muted text-muted-foreground',
     icon: 'text-muted-foreground',
-    glow: '',
   },
 };
 
@@ -77,8 +73,8 @@ export const PriorityCard = ({ topPriorities, focusNow, summary }: PriorityCardP
         <div className="text-center py-6">
           <Zap className="w-12 h-12 mx-auto mb-3 text-muted-foreground/30" />
           <p className="text-muted-foreground">مفيش مصالح نشطة</p>
-          <Link 
-            to="/deals" 
+          <Link
+            to="/deals"
             className="text-primary hover:underline text-sm mt-2 inline-block"
           >
             أضف مصلحة جديدة ←
@@ -122,7 +118,7 @@ export const PriorityCard = ({ topPriorities, focusNow, summary }: PriorityCardP
       </div>
 
       {/* Focus Now - Main Priority */}
-      <Link 
+      <Link
         to={`/deals/${focusNow.id}`}
         className={cn(
           "block p-5 transition-all hover:bg-secondary/30",
@@ -143,14 +139,14 @@ export const PriorityCard = ({ topPriorities, focusNow, summary }: PriorityCardP
                 نقاط: {focusNow.priority_score}
               </span>
             </div>
-            
+
             <h4 className="font-bold text-lg mb-1 truncate">{focusNow.name}</h4>
             <p className="text-sm text-muted-foreground mb-3">{focusNow.type}</p>
-            
+
             {/* Priority Reasons */}
             <div className="flex flex-wrap gap-2 mb-3">
               {focusNow.priority_reasons.map((reason, i) => (
-                <span 
+                <span
                   key={i}
                   className="text-xs px-2 py-1 rounded-lg bg-secondary text-foreground/80"
                 >
@@ -167,7 +163,7 @@ export const PriorityCard = ({ topPriorities, focusNow, summary }: PriorityCardP
               </div>
             )}
           </div>
-          
+
           <div className="text-left shrink-0">
             <p className="text-xl font-bold text-success">
               {formatMoney(Number(focusNow.expected_value), focusNow.currency)}
@@ -193,8 +189,8 @@ export const PriorityCard = ({ topPriorities, focusNow, summary }: PriorityCardP
                   >
                     <div className={cn(
                       "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
-                      deal.focus_level === 'critical' ? 'bg-danger/10' : 
-                      deal.focus_level === 'high' ? 'bg-warning/10' : 'bg-primary/10'
+                      deal.focus_level === 'critical' ? 'bg-danger/10' :
+                        deal.focus_level === 'high' ? 'bg-warning/10' : 'bg-primary/10'
                     )}>
                       <span className="text-sm font-bold text-muted-foreground">
                         {deal.priority_score}
@@ -220,7 +216,7 @@ export const PriorityCard = ({ topPriorities, focusNow, summary }: PriorityCardP
 
       {/* View All Link */}
       <div className="px-5 py-3 border-t border-border bg-secondary/20">
-        <Link 
+        <Link
           to="/focus"
           className="flex items-center justify-center gap-2 text-sm font-medium text-primary hover:underline"
         >
