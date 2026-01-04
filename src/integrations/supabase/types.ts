@@ -18,19 +18,19 @@ export type Database = {
         Row: {
           created_at: string
           id: string
-          messages: Json | null
+          messages: Json
           updated_at: string
         }
         Insert: {
           created_at?: string
           id?: string
-          messages?: Json | null
+          messages?: Json
           updated_at?: string
         }
         Update: {
           created_at?: string
           id?: string
-          messages?: Json | null
+          messages?: Json
           updated_at?: string
         }
         Relationships: []
@@ -38,7 +38,7 @@ export type Database = {
       calls: {
         Row: {
           call_date: string
-          call_type: string | null
+          call_type: string
           contact_name: string
           created_at: string
           deal_id: string | null
@@ -50,7 +50,7 @@ export type Database = {
         }
         Insert: {
           call_date?: string
-          call_type?: string | null
+          call_type?: string
           contact_name: string
           created_at?: string
           deal_id?: string | null
@@ -62,7 +62,7 @@ export type Database = {
         }
         Update: {
           call_date?: string
-          call_type?: string | null
+          call_type?: string
           contact_name?: string
           created_at?: string
           deal_id?: string | null
@@ -87,27 +87,27 @@ export type Database = {
           created_at: string
           deal_id: string | null
           id: string
-          is_completed: boolean | null
+          is_completed: boolean
           move_date: string
-          priority: number | null
+          priority: number
           title: string
         }
         Insert: {
           created_at?: string
           deal_id?: string | null
           id?: string
-          is_completed?: boolean | null
+          is_completed?: boolean
           move_date?: string
-          priority?: number | null
+          priority?: number
           title: string
         }
         Update: {
           created_at?: string
           deal_id?: string | null
           id?: string
-          is_completed?: boolean | null
+          is_completed?: boolean
           move_date?: string
-          priority?: number | null
+          priority?: number
           title?: string
         }
         Relationships: [
@@ -199,8 +199,8 @@ export type Database = {
           deal_id: string
           due_date: string | null
           id: string
-          is_completed: boolean | null
-          priority: number | null
+          is_completed: boolean
+          priority: number
           title: string
         }
         Insert: {
@@ -208,8 +208,8 @@ export type Database = {
           deal_id: string
           due_date?: string | null
           id?: string
-          is_completed?: boolean | null
-          priority?: number | null
+          is_completed?: boolean
+          priority?: number
           title: string
         }
         Update: {
@@ -217,8 +217,8 @@ export type Database = {
           deal_id?: string
           due_date?: string | null
           id?: string
-          is_completed?: boolean | null
-          priority?: number | null
+          is_completed?: boolean
+          priority?: number
           title?: string
         }
         Relationships: [
@@ -235,48 +235,48 @@ export type Database = {
         Row: {
           contacts: Json | null
           created_at: string
-          currency: string | null
+          currency: string
           description: string | null
-          expected_value: number | null
+          expected_value: number
           id: string
           name: string
           next_action: string | null
           next_action_date: string | null
           notes: string | null
-          priority: string | null
-          stage: string | null
+          priority: string
+          stage: string
           type: string
           updated_at: string
         }
         Insert: {
           contacts?: Json | null
           created_at?: string
-          currency?: string | null
+          currency?: string
           description?: string | null
-          expected_value?: number | null
+          expected_value?: number
           id?: string
           name: string
           next_action?: string | null
           next_action_date?: string | null
           notes?: string | null
-          priority?: string | null
-          stage?: string | null
+          priority?: string
+          stage?: string
           type?: string
           updated_at?: string
         }
         Update: {
           contacts?: Json | null
           created_at?: string
-          currency?: string | null
+          currency?: string
           description?: string | null
-          expected_value?: number | null
+          expected_value?: number
           id?: string
           name?: string
           next_action?: string | null
           next_action_date?: string | null
           notes?: string | null
-          priority?: string | null
-          stage?: string | null
+          priority?: string
+          stage?: string
           type?: string
           updated_at?: string
         }
@@ -287,27 +287,27 @@ export type Database = {
           amount: number
           created_at: string
           creditor_name: string
-          currency: string | null
+          currency: string
           due_date: string | null
           id: string
-          is_paid: boolean | null
-          monthly_payment: number | null
+          is_paid: boolean
+          monthly_payment: number
           notes: string | null
-          pressure_level: string | null
+          pressure_level: string
           remaining_amount: number | null
           updated_at: string
         }
         Insert: {
-          amount: number
+          amount?: number
           created_at?: string
           creditor_name: string
-          currency?: string | null
+          currency?: string
           due_date?: string | null
           id?: string
-          is_paid?: boolean | null
-          monthly_payment?: number | null
+          is_paid?: boolean
+          monthly_payment?: number
           notes?: string | null
-          pressure_level?: string | null
+          pressure_level?: string
           remaining_amount?: number | null
           updated_at?: string
         }
@@ -315,13 +315,13 @@ export type Database = {
           amount?: number
           created_at?: string
           creditor_name?: string
-          currency?: string | null
+          currency?: string
           due_date?: string | null
           id?: string
-          is_paid?: boolean | null
-          monthly_payment?: number | null
+          is_paid?: boolean
+          monthly_payment?: number
           notes?: string | null
-          pressure_level?: string | null
+          pressure_level?: string
           remaining_amount?: number | null
           updated_at?: string
         }
