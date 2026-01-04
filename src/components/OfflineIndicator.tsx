@@ -83,29 +83,6 @@ export const OfflineIndicator = () => {
         )}
       </div>
 
-      {/* Offline Banner */}
-      {showBanner && !isOnline && (
-        <div className="fixed top-16 lg:top-0 inset-x-0 lg:right-72 z-40 animate-fade-in">
-          <div className="bg-warning/10 border-b border-warning/20 px-4 py-3 flex items-center justify-center gap-3 text-sm">
-            <WifiOff className="w-4 h-4 text-warning" />
-            <span className="text-warning font-medium">
-              أنت offline - التغييرات بتتحفظ محلياً وهتتزامن لما النت يرجع
-            </span>
-          </div>
-        </div>
-      )}
-
-      {/* Syncing Banner */}
-      {isSyncing && (
-        <div className="fixed top-16 lg:top-0 inset-x-0 lg:right-72 z-40 animate-fade-in">
-          <div className="bg-accent/10 border-b border-accent/20 px-4 py-3 flex items-center justify-center gap-3 text-sm">
-            <RefreshCw className="w-4 h-4 text-accent animate-spin" />
-            <span className="text-accent font-medium">
-              جاري مزامنة البيانات...
-            </span>
-          </div>
-        </div>
-      )}
     </>
   );
 };
