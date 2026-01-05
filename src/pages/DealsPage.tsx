@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { Layout } from '@/components/Layout';
 import { useDeals, useDeleteDeal } from '@/hooks/useDeals';
 import { Link } from 'react-router-dom';
-import { Deal } from '@/types';
+import { Deal, toEGP, USD_TO_EGP_RATE } from '@/types';
 import { 
   Plus, 
   Search, 
@@ -47,6 +47,7 @@ const stageStyles: Record<string, string> = {
   'مفاوضات': 'bg-accent/12 text-accent border-accent/20',
   'مستني رد': 'bg-muted/80 text-muted-foreground border-border',
   'مستني توقيع': 'bg-success/12 text-success border-success/20',
+  'مؤجل': 'bg-secondary text-secondary-foreground border-border',
   'مقفول': 'bg-success/15 text-success border-success/25',
   'ملغي': 'bg-muted text-muted-foreground border-border',
 };
@@ -74,14 +75,20 @@ const DealsPage = () => {
     return matchesSearch && matchesStage;
   });
 
-  // Statistics
+  // Statistics - with currency conversion to EGP
   const stats = useMemo(() => {
-    const activeDeals = deals.filter(d => d.stage !== 'مقفول' && d.stage !== 'ملغي');
+    const activeDeals = deals.filter(d => d.stage !== 'مقفول' && d.stage !== 'ملغي' && d.stage !== 'مؤجل');
     const closedDeals = deals.filter(d => d.stage === 'مقفول');
     const cancelledDeals = deals.filter(d => d.stage === 'ملغي');
+    const deferredDeals = deals.filter(d => d.stage === 'مؤجل');
     
-    const totalExpected = activeDeals.reduce((sum, d) => sum + Number(d.expected_value || 0), 0);
-    const closedValue = closedDeals.reduce((sum, d) => sum + Number(d.expected_value || 0), 0);
+    // Convert all values to EGP for accurate totals
+    const totalExpectedEGP = activeDeals.reduce((sum, d) => 
+      sum + toEGP(Number(d.expected_value || 0), d.currency), 0);
+    const closedValueEGP = closedDeals.reduce((sum, d) => 
+      sum + toEGP(Number(d.expected_value || 0), d.currency), 0);
+    const totalRealizedEGP = deals.reduce((sum, d) => 
+      sum + toEGP(Number(d.realized_value || 0), d.currency), 0);
     
     const highPriority = activeDeals.filter(d => d.priority === 'عالي').length;
     
@@ -103,8 +110,10 @@ const DealsPage = () => {
       active: activeDeals.length,
       closed: closedDeals.length,
       cancelled: cancelledDeals.length,
-      totalExpected,
-      closedValue,
+      deferred: deferredDeals.length,
+      totalExpectedEGP,
+      closedValueEGP,
+      totalRealizedEGP,
       highPriority,
       needsActionToday: needsActionToday.length,
       needsActionTomorrow: needsActionTomorrow.length,
@@ -117,7 +126,7 @@ const DealsPage = () => {
     return currency === 'USD' ? `$${formatted}` : `${formatted} ج.م`;
   };
 
-  const stages = ['جديد', 'بتتكلم', 'مفاوضات', 'مستني رد', 'مستني توقيع', 'مقفول', 'ملغي'];
+  const stages = ['جديد', 'بتتكلم', 'مفاوضات', 'مستني رد', 'مستني توقيع', 'مؤجل', 'مقفول', 'ملغي'];
 
   return (
     <Layout>
@@ -143,7 +152,7 @@ const DealsPage = () => {
         </div>
 
         {/* Stats Overview */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger-children">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 stagger-children">
           <div className="card-elegant p-5">
             <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
               <Briefcase className="w-5 h-5 text-primary" />
@@ -157,9 +166,18 @@ const DealsPage = () => {
             <div className="w-11 h-11 rounded-xl bg-success/10 flex items-center justify-center mb-3">
               <Target className="w-5 h-5 text-success" />
             </div>
-            <p className="text-2xl font-bold text-success">{formatMoney(stats.totalExpected)}</p>
-            <p className="text-xs text-muted-foreground">قيمة متوقعة</p>
+            <p className="text-2xl font-bold text-success">{formatMoney(stats.totalExpectedEGP)}</p>
+            <p className="text-xs text-muted-foreground">قيمة متوقعة (بالجنيه)</p>
             <p className="text-sm font-medium text-muted-foreground mt-1">من المصالح النشطة</p>
+          </div>
+
+          <div className="card-elegant p-5 border-success/20 bg-success/5">
+            <div className="w-11 h-11 rounded-xl bg-success/15 flex items-center justify-center mb-3">
+              <TrendingUp className="w-5 h-5 text-success" />
+            </div>
+            <p className="text-2xl font-bold text-success">{formatMoney(stats.totalRealizedEGP)}</p>
+            <p className="text-xs text-muted-foreground">دخل فعلي (بالجنيه)</p>
+            <p className="text-sm font-medium text-muted-foreground mt-1">الفلوس اللي دخلت</p>
           </div>
 
           <div className="card-elegant p-5">
@@ -167,7 +185,7 @@ const DealsPage = () => {
               <CheckCircle2 className="w-5 h-5 text-accent" />
             </div>
             <p className="text-2xl font-bold">{stats.closed}</p>
-            <p className="text-xs text-muted-foreground">{formatMoney(stats.closedValue)}</p>
+            <p className="text-xs text-muted-foreground">{formatMoney(stats.closedValueEGP)}</p>
             <p className="text-sm font-medium text-muted-foreground mt-1">مصالح مقفولة</p>
           </div>
 

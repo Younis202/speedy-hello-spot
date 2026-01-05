@@ -2,6 +2,7 @@ import { useDeals } from '@/hooks/useDeals';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, Briefcase, ArrowUpRight, Clock, Flame } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { toEGP } from '@/types';
 
 const stageStyles: Record<string, string> = {
   'جديد': 'bg-primary/12 text-primary border-primary/20',
@@ -9,6 +10,7 @@ const stageStyles: Record<string, string> = {
   'مفاوضات': 'bg-accent/12 text-accent border-accent/20',
   'مستني رد': 'bg-muted/80 text-muted-foreground border-border',
   'مستني توقيع': 'bg-success/12 text-success border-success/20',
+  'مؤجل': 'bg-secondary text-secondary-foreground border-border',
   'مقفول': 'bg-success/15 text-success border-success/25',
   'ملغي': 'bg-muted text-muted-foreground border-border',
 };
@@ -23,7 +25,7 @@ export const HotDealsCard = () => {
   const { data: deals = [], isLoading } = useDeals();
   
   const activeDeals = deals
-    .filter(d => d.stage !== 'مقفول' && d.stage !== 'ملغي')
+    .filter(d => d.stage !== 'مقفول' && d.stage !== 'ملغي' && d.stage !== 'مؤجل')
     .sort((a, b) => {
       const priorityOrder = { 'عالي': 0, 'متوسط': 1, 'منخفض': 2 };
       return (priorityOrder[a.priority as keyof typeof priorityOrder] || 1) - 
@@ -31,12 +33,14 @@ export const HotDealsCard = () => {
     })
     .slice(0, 6);
   
-  const formatMoney = (amount: number, currency: string) => 
+  const formatMoney = (amount: number, currency: string = 'EGP') => 
     currency === 'USD' 
       ? `$${new Intl.NumberFormat('ar-EG').format(amount)}` 
       : `${new Intl.NumberFormat('ar-EG').format(amount)} ج.م`;
 
-  const totalExpected = activeDeals.reduce((sum, d) => sum + Number(d.expected_value || 0), 0);
+  // Convert all to EGP for accurate total
+  const totalExpectedEGP = activeDeals.reduce((sum, d) => 
+    sum + toEGP(Number(d.expected_value || 0), d.currency), 0);
 
   return (
     <div className="card-elegant overflow-hidden">
@@ -50,7 +54,7 @@ export const HotDealsCard = () => {
             <div>
               <h2 className="font-bold text-lg">المصالح الساخنة</h2>
               <p className="text-sm text-muted-foreground">
-                {activeDeals.length} مصلحة نشطة · <span className="text-success font-medium">{formatMoney(totalExpected, 'EGP')}</span> متوقع
+                {activeDeals.length} مصلحة نشطة · <span className="text-success font-medium">{formatMoney(totalExpectedEGP)}</span> متوقع
               </p>
             </div>
           </div>

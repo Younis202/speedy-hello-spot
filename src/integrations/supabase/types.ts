@@ -244,6 +244,7 @@ export type Database = {
           next_action_date: string | null
           notes: string | null
           priority: string
+          realized_value: number
           stage: string
           type: string
           updated_at: string
@@ -260,6 +261,7 @@ export type Database = {
           next_action_date?: string | null
           notes?: string | null
           priority?: string
+          realized_value?: number
           stage?: string
           type?: string
           updated_at?: string
@@ -276,6 +278,7 @@ export type Database = {
           next_action_date?: string | null
           notes?: string | null
           priority?: string
+          realized_value?: number
           stage?: string
           type?: string
           updated_at?: string

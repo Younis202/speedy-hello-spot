@@ -1,9 +1,13 @@
+// Exchange rate for currency conversion (USD to EGP)
+export const USD_TO_EGP_RATE = 50;
+
 export interface Deal {
   id: string;
   name: string;
   type: string;
   description?: string;
   expected_value: number;
+  realized_value: number;
   currency: string;
   stage: string;
   priority: string;
@@ -14,6 +18,12 @@ export interface Deal {
   created_at: string;
   updated_at: string;
 }
+
+// Helper to convert any currency to EGP
+export const toEGP = (amount: number, currency: string): number => {
+  if (currency === 'USD') return amount * USD_TO_EGP_RATE;
+  return amount;
+};
 
 export interface Contact {
   name: string;
@@ -97,6 +107,7 @@ export const DEAL_STAGES = [
   'مفاوضات',
   'مستني رد',
   'مستني توقيع',
+  'مؤجل',
   'مقفول',
   'ملغي'
 ] as const;
