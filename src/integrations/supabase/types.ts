@@ -233,7 +233,9 @@ export type Database = {
       }
       deals: {
         Row: {
+          commission_percentage: number | null
           contacts: Json | null
+          contract_type: string | null
           created_at: string
           currency: string
           description: string | null
@@ -246,11 +248,14 @@ export type Database = {
           priority: string
           realized_value: number
           stage: string
+          success_fee: number | null
           type: string
           updated_at: string
         }
         Insert: {
+          commission_percentage?: number | null
           contacts?: Json | null
+          contract_type?: string | null
           created_at?: string
           currency?: string
           description?: string | null
@@ -263,11 +268,14 @@ export type Database = {
           priority?: string
           realized_value?: number
           stage?: string
+          success_fee?: number | null
           type?: string
           updated_at?: string
         }
         Update: {
+          commission_percentage?: number | null
           contacts?: Json | null
+          contract_type?: string | null
           created_at?: string
           currency?: string
           description?: string | null
@@ -280,6 +288,7 @@ export type Database = {
           priority?: string
           realized_value?: number
           stage?: string
+          success_fee?: number | null
           type?: string
           updated_at?: string
         }
@@ -326,6 +335,57 @@ export type Database = {
           notes?: string | null
           pressure_level?: string
           remaining_amount?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      jobs: {
+        Row: {
+          company: string | null
+          created_at: string
+          currency: string
+          description: string | null
+          hours_per_day: number | null
+          id: string
+          is_active: boolean
+          name: string
+          next_pay_date: string | null
+          notes: string | null
+          pay_frequency: string
+          salary_amount: number
+          start_date: string | null
+          updated_at: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          hours_per_day?: number | null
+          id?: string
+          is_active?: boolean
+          name: string
+          next_pay_date?: string | null
+          notes?: string | null
+          pay_frequency?: string
+          salary_amount?: number
+          start_date?: string | null
+          updated_at?: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          hours_per_day?: number | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          next_pay_date?: string | null
+          notes?: string | null
+          pay_frequency?: string
+          salary_amount?: number
+          start_date?: string | null
           updated_at?: string
         }
         Relationships: []
