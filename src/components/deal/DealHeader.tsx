@@ -17,6 +17,7 @@ const stageStyles: Record<string, string> = {
   'مفاوضات': 'bg-accent/10 text-accent border border-accent/20',
   'مستني رد': 'badge-muted',
   'مستني توقيع': 'badge-success',
+  'مؤجل': 'bg-secondary text-secondary-foreground border border-border',
   'مقفول': 'bg-success/20 text-success border border-success/30',
   'ملغي': 'badge-muted',
 };

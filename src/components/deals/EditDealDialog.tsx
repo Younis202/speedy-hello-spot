@@ -27,6 +27,7 @@ export const EditDealDialog = ({ deal, open, onOpenChange }: EditDealDialogProps
     type: 'وساطة',
     description: '',
     expected_value: '',
+    realized_value: '',
     currency: 'EGP',
     stage: 'جديد',
     priority: 'متوسط',
@@ -42,6 +43,7 @@ export const EditDealDialog = ({ deal, open, onOpenChange }: EditDealDialogProps
         type: deal.type || 'وساطة',
         description: deal.description || '',
         expected_value: deal.expected_value?.toString() || '',
+        realized_value: deal.realized_value?.toString() || '0',
         currency: deal.currency || 'EGP',
         stage: deal.stage || 'جديد',
         priority: deal.priority || 'متوسط',
@@ -62,6 +64,7 @@ export const EditDealDialog = ({ deal, open, onOpenChange }: EditDealDialogProps
       type: form.type,
       description: form.description,
       expected_value: parseFloat(form.expected_value) || 0,
+      realized_value: parseFloat(form.realized_value) || 0,
       currency: form.currency,
       stage: form.stage,
       priority: form.priority,
@@ -149,6 +152,17 @@ export const EditDealDialog = ({ deal, open, onOpenChange }: EditDealDialogProps
                 </SelectContent>
               </Select>
             </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label className="text-xs text-success">الدخل الفعلي (الفلوس اللي دخلت)</Label>
+            <Input
+              type="number"
+              value={form.realized_value}
+              onChange={(e) => setForm({ ...form, realized_value: e.target.value })}
+              placeholder="0"
+              className="h-9 text-sm border-success/30 focus:border-success"
+            />
           </div>
 
           <div className="space-y-1.5">
