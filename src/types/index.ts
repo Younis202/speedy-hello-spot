@@ -1,5 +1,5 @@
 // Exchange rate for currency conversion (USD to EGP)
-export const USD_TO_EGP_RATE = 50;
+export const USD_TO_EGP_RATE = 47;
 
 export interface Deal {
   id: string;
