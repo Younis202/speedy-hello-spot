@@ -15,9 +15,22 @@ export interface Deal {
   next_action_date?: string;
   contacts: Contact[];
   notes?: string;
+  // Contract details
+  contract_type?: string;
+  commission_percentage?: number;
+  success_fee?: number;
+  // Owner (null = my deal, string = partner's deal)
+  owner?: string;
   created_at: string;
   updated_at: string;
 }
+
+export const CONTRACT_TYPES = [
+  { value: 'one-time', label: 'مرة واحدة' },
+  { value: 'commission', label: 'نسبة من الأرباح' },
+  { value: 'success-fee', label: 'Success Fee' },
+  { value: 'retainer', label: 'عقد شهري' },
+] as const;
 
 // Helper to convert any currency to EGP
 export const toEGP = (amount: number, currency: string): number => {

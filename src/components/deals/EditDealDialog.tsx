@@ -6,10 +6,10 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useUpdateDeal } from '@/hooks/useDeals';
-import { DEAL_TYPES, DEAL_STAGES, PRIORITIES, Deal } from '@/types';
+import { DEAL_TYPES, DEAL_STAGES, PRIORITIES, Deal, CONTRACT_TYPES } from '@/types';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, Users } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { ar } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
@@ -34,6 +34,12 @@ export const EditDealDialog = ({ deal, open, onOpenChange }: EditDealDialogProps
     next_action: '',
     next_action_date: undefined as Date | undefined,
     notes: '',
+    // Contract fields
+    contract_type: 'one-time',
+    commission_percentage: '',
+    success_fee: '',
+    // Owner field
+    owner: '',
   });
 
   useEffect(() => {
@@ -50,6 +56,10 @@ export const EditDealDialog = ({ deal, open, onOpenChange }: EditDealDialogProps
         next_action: deal.next_action || '',
         next_action_date: deal.next_action_date ? parseISO(deal.next_action_date) : undefined,
         notes: deal.notes || '',
+        contract_type: deal.contract_type || 'one-time',
+        commission_percentage: deal.commission_percentage?.toString() || '',
+        success_fee: deal.success_fee?.toString() || '',
+        owner: deal.owner || '',
       });
     }
   }, [deal]);
@@ -72,6 +82,10 @@ export const EditDealDialog = ({ deal, open, onOpenChange }: EditDealDialogProps
       next_action_date: form.next_action_date ? format(form.next_action_date, 'yyyy-MM-dd') : null,
       notes: form.notes,
       contacts: deal.contacts,
+      contract_type: form.contract_type,
+      commission_percentage: parseFloat(form.commission_percentage) || null,
+      success_fee: parseFloat(form.success_fee) || null,
+      owner: form.owner || null,
     }, {
       onSuccess: () => {
         onOpenChange(false);
@@ -177,6 +191,67 @@ export const EditDealDialog = ({ deal, open, onOpenChange }: EditDealDialogProps
                 ))}
               </SelectContent>
             </Select>
+          </div>
+
+          {/* Owner Field */}
+          <div className="space-y-1.5 p-3 rounded-lg bg-accent/5 border border-accent/20">
+            <Label className="text-xs flex items-center gap-2">
+              <Users className="w-3.5 h-3.5 text-accent" />
+              صاحب المصلحة
+            </Label>
+            <Input
+              value={form.owner}
+              onChange={(e) => setForm({ ...form, owner: e.target.value })}
+              placeholder="اتركه فاضي لو مصلحتك أنت"
+              className="h-9 text-sm"
+            />
+            <p className="text-xs text-muted-foreground">لو المصلحة دي بتاعة صاحب اكتب اسمه</p>
+          </div>
+
+          {/* Contract Details Section */}
+          <div className="space-y-3 p-3 rounded-lg bg-primary/5 border border-primary/20">
+            <Label className="text-xs font-semibold text-primary">تفاصيل العقد</Label>
+            
+            <div className="space-y-1.5">
+              <Label className="text-xs">نوع العقد</Label>
+              <Select value={form.contract_type} onValueChange={(v) => setForm({ ...form, contract_type: v })}>
+                <SelectTrigger className="h-9 text-sm">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-popover">
+                  {CONTRACT_TYPES.map(ct => (
+                    <SelectItem key={ct.value} value={ct.value}>{ct.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {(form.contract_type === 'commission' || form.contract_type === 'success-fee') && (
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label className="text-xs">نسبة العمولة %</Label>
+                  <Input
+                    type="number"
+                    value={form.commission_percentage}
+                    onChange={(e) => setForm({ ...form, commission_percentage: e.target.value })}
+                    placeholder="0"
+                    className="h-9 text-sm"
+                    min="0"
+                    max="100"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-xs">Success Fee</Label>
+                  <Input
+                    type="number"
+                    value={form.success_fee}
+                    onChange={(e) => setForm({ ...form, success_fee: e.target.value })}
+                    placeholder="0"
+                    className="h-9 text-sm"
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="space-y-1.5">
