@@ -11,7 +11,8 @@ import {
   Command,
   Target,
   Sparkles,
-  Building2
+  Building2,
+  Users
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -25,6 +26,7 @@ const navItems = [
   { path: '/', icon: LayoutDashboard, label: 'الرئيسية', gradient: 'from-amber-500 to-orange-500' },
   { path: '/focus', icon: Target, label: 'الأولويات', gradient: 'from-cyan-500 to-blue-500' },
   { path: '/deals', icon: Briefcase, label: 'المصالح', gradient: 'from-emerald-500 to-teal-500' },
+  { path: '/partners', icon: Users, label: 'الأصحاب', gradient: 'from-purple-500 to-pink-500' },
   { path: '/jobs', icon: Building2, label: 'الشغلانات', gradient: 'from-indigo-500 to-violet-500' },
   { path: '/money', icon: Wallet, label: 'الفلوس', gradient: 'from-rose-500 to-pink-500' },
   { path: '/calls', icon: Phone, label: 'المكالمات', gradient: 'from-violet-500 to-purple-500' },

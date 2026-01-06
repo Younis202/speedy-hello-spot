@@ -12,6 +12,8 @@ import AIPage from "./pages/AIPage";
 import FocusPage from "./pages/FocusPage";
 import InstallPage from "./pages/InstallPage";
 import JobsPage from "./pages/JobsPage";
+import PartnersPage from "./pages/PartnersPage";
+import PartnerDetailsPage from "./pages/PartnerDetailsPage";
 import NotFound from "./pages/NotFound";
 import { OfflineIndicator } from "./components/OfflineIndicator";
 import ElectronTitleBar from "./components/ElectronTitleBar";
@@ -47,6 +49,8 @@ const App = () => (
           <Route path="/ai" element={<AIPage />} />
           <Route path="/focus" element={<FocusPage />} />
           <Route path="/jobs" element={<JobsPage />} />
+          <Route path="/partners" element={<PartnersPage />} />
+          <Route path="/partners/:name" element={<PartnerDetailsPage />} />
           <Route path="/install" element={<InstallPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
