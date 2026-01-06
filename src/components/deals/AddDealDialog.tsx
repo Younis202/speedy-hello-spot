@@ -6,7 +6,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useCreateDeal } from '@/hooks/useDeals';
-import { DEAL_TYPES, DEAL_STAGES, PRIORITIES } from '@/types';
+import { DEAL_TYPES, DEAL_STAGES, PRIORITIES, CONTRACT_TYPES } from '@/types';
+import { Users } from 'lucide-react';
 
 interface AddDealDialogProps {
   open: boolean;
@@ -25,6 +26,10 @@ export const AddDealDialog = ({ open, onOpenChange }: AddDealDialogProps) => {
     priority: 'متوسط',
     next_action: '',
     notes: '',
+    contract_type: 'one-time',
+    commission_percentage: '',
+    success_fee: '',
+    owner: '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -42,6 +47,10 @@ export const AddDealDialog = ({ open, onOpenChange }: AddDealDialogProps) => {
       next_action: form.next_action,
       notes: form.notes,
       contacts: [],
+      contract_type: form.contract_type,
+      commission_percentage: parseFloat(form.commission_percentage) || null,
+      success_fee: parseFloat(form.success_fee) || null,
+      owner: form.owner || null,
     }, {
       onSuccess: () => {
         onOpenChange(false);
@@ -55,6 +64,10 @@ export const AddDealDialog = ({ open, onOpenChange }: AddDealDialogProps) => {
           priority: 'متوسط',
           next_action: '',
           notes: '',
+          contract_type: 'one-time',
+          commission_percentage: '',
+          success_fee: '',
+          owner: '',
         });
       }
     });
@@ -147,6 +160,67 @@ export const AddDealDialog = ({ open, onOpenChange }: AddDealDialogProps) => {
                 ))}
               </SelectContent>
             </Select>
+          </div>
+
+          {/* Owner Field */}
+          <div className="space-y-1.5 p-3 rounded-lg bg-accent/5 border border-accent/20">
+            <Label className="text-xs flex items-center gap-2">
+              <Users className="w-3.5 h-3.5 text-accent" />
+              صاحب المصلحة
+            </Label>
+            <Input
+              value={form.owner}
+              onChange={(e) => setForm({ ...form, owner: e.target.value })}
+              placeholder="اتركه فاضي لو مصلحتك أنت"
+              className="h-9 text-sm"
+            />
+            <p className="text-xs text-muted-foreground">لو المصلحة دي بتاعة صاحب اكتب اسمه</p>
+          </div>
+
+          {/* Contract Details */}
+          <div className="space-y-3 p-3 rounded-lg bg-primary/5 border border-primary/20">
+            <Label className="text-xs font-semibold text-primary">تفاصيل العقد</Label>
+            
+            <div className="space-y-1.5">
+              <Label className="text-xs">نوع العقد</Label>
+              <Select value={form.contract_type} onValueChange={(v) => setForm({ ...form, contract_type: v })}>
+                <SelectTrigger className="h-9 text-sm">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {CONTRACT_TYPES.map(ct => (
+                    <SelectItem key={ct.value} value={ct.value}>{ct.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {(form.contract_type === 'commission' || form.contract_type === 'success-fee') && (
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label className="text-xs">نسبة العمولة %</Label>
+                  <Input
+                    type="number"
+                    value={form.commission_percentage}
+                    onChange={(e) => setForm({ ...form, commission_percentage: e.target.value })}
+                    placeholder="0"
+                    className="h-9 text-sm"
+                    min="0"
+                    max="100"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-xs">Success Fee</Label>
+                  <Input
+                    type="number"
+                    value={form.success_fee}
+                    onChange={(e) => setForm({ ...form, success_fee: e.target.value })}
+                    placeholder="0"
+                    className="h-9 text-sm"
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="space-y-1.5">

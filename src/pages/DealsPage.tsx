@@ -21,7 +21,8 @@ import {
   Calendar,
   AlertCircle,
   CheckCircle2,
-  XCircle
+  XCircle,
+  Users
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -67,12 +68,22 @@ const DealsPage = () => {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [editDeal, setEditDeal] = useState<Deal | null>(null);
+  const [ownerFilter, setOwnerFilter] = useState<'all' | 'mine' | 'partners'>('all');
+
+  // Separate deals by owner
+  const myDeals = deals.filter(d => !d.owner);
+  const partnerDeals = deals.filter(d => d.owner);
+  const uniqueOwners = [...new Set(partnerDeals.map(d => d.owner).filter(Boolean))];
 
   const filteredDeals = deals.filter(deal => {
     const matchesSearch = deal.name.toLowerCase().includes(search.toLowerCase()) ||
-                         deal.type.toLowerCase().includes(search.toLowerCase());
+                         deal.type.toLowerCase().includes(search.toLowerCase()) ||
+                         (deal.owner || '').toLowerCase().includes(search.toLowerCase());
     const matchesStage = !filterStage || deal.stage === filterStage;
-    return matchesSearch && matchesStage;
+    const matchesOwner = ownerFilter === 'all' || 
+                        (ownerFilter === 'mine' && !deal.owner) || 
+                        (ownerFilter === 'partners' && deal.owner);
+    return matchesSearch && matchesStage && matchesOwner;
   });
 
   // Statistics - with currency conversion to EGP
@@ -303,6 +314,45 @@ const DealsPage = () => {
             </div>
           </div>
 
+          {/* Owner Filter */}
+          <div className="flex gap-2 overflow-x-auto pb-1">
+            <button
+              onClick={() => setOwnerFilter('all')}
+              className={cn(
+                "px-4 py-2 rounded-lg text-sm font-medium transition-all shrink-0 border flex items-center gap-2",
+                ownerFilter === 'all' 
+                  ? 'bg-primary text-primary-foreground border-primary' 
+                  : 'bg-secondary/50 text-muted-foreground border-transparent hover:text-foreground hover:bg-secondary'
+              )}
+            >
+              الكل ({deals.length})
+            </button>
+            <button
+              onClick={() => setOwnerFilter('mine')}
+              className={cn(
+                "px-4 py-2 rounded-lg text-sm font-medium transition-all shrink-0 border flex items-center gap-2",
+                ownerFilter === 'mine' 
+                  ? 'bg-primary text-primary-foreground border-primary' 
+                  : 'bg-secondary/50 text-muted-foreground border-transparent hover:text-foreground hover:bg-secondary'
+              )}
+            >
+              <Briefcase className="w-3.5 h-3.5" />
+              مصالحي ({myDeals.length})
+            </button>
+            <button
+              onClick={() => setOwnerFilter('partners')}
+              className={cn(
+                "px-4 py-2 rounded-lg text-sm font-medium transition-all shrink-0 border flex items-center gap-2",
+                ownerFilter === 'partners' 
+                  ? 'bg-accent text-accent-foreground border-accent' 
+                  : 'bg-secondary/50 text-muted-foreground border-transparent hover:text-foreground hover:bg-secondary'
+              )}
+            >
+              <Users className="w-3.5 h-3.5" />
+              مصالح الأصحاب ({partnerDeals.length})
+            </button>
+          </div>
+
           {/* Stage Filters */}
           <div className="flex gap-2 overflow-x-auto pb-1">
             <button
@@ -411,7 +461,15 @@ const DealsPage = () => {
                           {deal.name}
                         </Link>
                       </div>
-                      <p className="text-xs text-muted-foreground">{deal.type}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-xs text-muted-foreground">{deal.type}</p>
+                        {deal.owner && (
+                          <span className="text-xs px-1.5 py-0.5 rounded bg-accent/10 text-accent border border-accent/20 flex items-center gap-1">
+                            <Users className="w-3 h-3" />
+                            {deal.owner}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
 
@@ -492,7 +550,15 @@ const DealsPage = () => {
                       >
                         {deal.name}
                       </Link>
-                      <p className="text-xs text-muted-foreground truncate">{deal.type}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-xs text-muted-foreground truncate">{deal.type}</p>
+                        {deal.owner && (
+                          <span className="text-xs px-1.5 py-0.5 rounded bg-accent/10 text-accent border border-accent/20 flex items-center gap-1">
+                            <Users className="w-3 h-3" />
+                            {deal.owner}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
 
