@@ -123,6 +123,10 @@ export const useCreateDeal = () => {
             next_action_date: deal.next_action_date,
             contacts: (deal.contacts || []) as unknown as Json,
             notes: deal.notes,
+            contract_type: deal.contract_type,
+            commission_percentage: deal.commission_percentage,
+            success_fee: deal.success_fee,
+            owner: deal.owner,
           }])
           .select()
           .single();
@@ -191,6 +195,10 @@ export const useUpdateDeal = () => {
             next_action_date: deal.next_action_date,
             contacts: (deal.contacts || []) as unknown as Json,
             notes: deal.notes,
+            contract_type: deal.contract_type,
+            commission_percentage: deal.commission_percentage,
+            success_fee: deal.success_fee,
+            owner: deal.owner,
           })
           .eq('id', id)
           .select()
